@@ -4,38 +4,33 @@
 library(caret)
 
 # Gerando dados de treino e de teste
-splits <- createDataPartition(dfSample$log_demand, p=0.7, list=FALSE)
+splits <- createDataPartition(dfSelected$Demanda_uni_equil, p=0.7, list=FALSE)
 
 # Separando os dados
-dados_treino <- dfSample[ splits,]
-dados_teste <- dfSample[-splits,]
+dados_treino <- dfSelected[ splits,]
+dados_teste <- dfSelected[-splits,]
 
 # --------------------------------------------------------------------
 # Construindo um modelo Linear Model
-modeloLM <- train(log_demand ~ ., data = dados_treino, method = "lm")
+controlLM <- trainControl(method="cv", number=5)
+modeloLM <- train(Demanda_uni_equil ~ ., data = dados_treino, method = "lm", metric="RMSE", trControl=controlLM)
 
-# Resumo do Modelo
+# Resumo do Modelo Linear Model
+# O Rsquared ficou muito alto (pode ser problema de overfitting devido % de nao retorno que é alto)
 print(modeloLM)
-#RMSE    : 0.9398102
-#Rsquared: 0.1180286
-#MAE     : 0.7306142
 
-# Aplicando e visualizando o modelo nos dados de teste
-predLM <- predict(modeloLM, newdata = dados_teste)
-plot(dados_teste$log_demand, predLM)
+# --------------------------------------------------------------------
+# Construindo um modelo Random Forest
+controlRF <- trainControl(method="cv", number=4)
+modeloRF <- train(Demanda_uni_equil ~ ., data = dados_treino, method = "rf", metric="RMSE", trControl=controlRF)
 
+# Resumo do Modelo Random Forest
+print(modeloRF)
 
 # --------------------------------------------------------------------
 # Construindo um modelo Generalized Boosted Regression Modeling (GBM)
-modeloGBM <- train(log_demand ~ .,data=dados_treino, method="gbm", verbose=FALSE)
+controlGBM <- trainControl(method="cv", number=4)
+modeloGBM <- train(Demanda_uni_equil ~ ., data=dados_treino, method="gbm", verbose=FALSE, metric="RMSE", trControl=controlGBM)
 
-# Resumo do Modelo
+# Resumo do Modelo GBM
 print(modeloGBM)
-#RMSE    : 0.8340822
-#Rsquared: 0.3196709
-#MAE     : 0.6419830
-
-# Aplicando e visualizando o modelo nos dados de teste
-predGBM <- predict(modeloGBM, newdata = dados_teste)
-plot(dados_teste$log_demand, predGBM)
-

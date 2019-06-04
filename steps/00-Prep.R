@@ -12,9 +12,10 @@ trainData = "dados/train.data.Rda"
 
 if (file.exists(trainData)) {
   dfTreino <- readRDS(file=trainData)
+  rm('trainData')
 }else{
   # Carregando o Dataset "TRAIN.CSV"
-  # Os dados brutos contém 74.180.464 linhas e 11 colunas (atributos). 
+  # Os dados brutos contém 11 colunas (atributos). 
   # A coluna "Demanda_uni_equil" é o alvo.
   dtTreino  <- fread("dados/train.csv")
   dtCliente <- fread("dados/cliente_tabla.csv")
@@ -46,34 +47,36 @@ if (file.exists(trainData)) {
   rm('dfCliente')
   rm('dfProduto')
   
-  # Os dados brutos apos o merge ficou com 74.773.833 linhas e 15 colunas (atributos). 
+  # Os dados brutos apos o merge ficou com 15 colunas (atributos). 
   # Visualizando dados do dataframe
-  View(dfTreino)
-  str(dfTreino)
+  #View(dfTreino)
+  #str(dfTreino)
   
 }
 
 # --------------------------------------------------------------------
 # Carregando o arquivo de Teste
+# Utilizado caso queira prever as demandas dos produtos 
+# no dataset de teste disponibilizado no kaggle
 
-testData = "dados/test.data.Rda" 
-
-if (file.exists(testData)) {
-  dfTeste <- readRDS(file=testData)
-}else{
-  # Carregando o Dataset "TEST.CSV"
-  dtTeste   <- fread("dados/test.csv")
-
-  # Criacao dos DataFrame
-  dfTeste   <- as.data.frame(dtTeste)
-  
-  # Remover os DataTable
-  rm('dtTeste')
-
-  # Salvando DF no disco para acelerar o trabalho
-  saveRDS(dfTeste, file="test.data.Rda")
-  
-}
+# testData = "dados/test.data.Rda" 
+# 
+# if (file.exists(testData)) {
+#   dfTeste <- readRDS(file=testData)
+# }else{
+#   # Carregando o Dataset "TEST.CSV"
+#   dtTeste   <- fread("dados/test.csv")
+# 
+#   # Criacao dos DataFrame
+#   dfTeste   <- as.data.frame(dtTeste)
+#   
+#   # Remover os DataTable
+#   rm('dtTeste')
+# 
+#   # Salvando DF no disco para acelerar o trabalho
+#   saveRDS(dfTeste, file="test.data.Rda")
+#   
+# }
 
 # --------------------------------------------------------------------
 # Nome das variáveis
@@ -95,6 +98,3 @@ if (file.exists(testData)) {
 # Dev_uni_proxima — Returns unit next week (integer)
 # Dev_proxima — Returns next week (unit: pesos)
 # Demanda_uni_equil — Adjusted Demand (integer) (This is the target you will predict)
-
-
-
