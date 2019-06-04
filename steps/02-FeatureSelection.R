@@ -1,7 +1,8 @@
 ### FEATURE SELECTION (Selecao de Variaveis)
 
-# Selecionando algumas colunas para previsao de correlacao
-dfSampleSelected <- dfSample %>% select(Semana, Agencia_ID, Canal_ID, Ruta_SAK, Cliente_ID, Producto_ID, Demanda_uni_equil)
+# Buscando uma amostra do DataFrame de Treino para facilitar a analise
+dfSample <- sample_n(dfTreino, 100000)
 
-# Visualizando dados do dataframe
-View(dfSampleSelected)
+# Verificar se existem valores ausentes (missing) em cada coluna
+# Dados NA nao encontrados
+any(is.na(dfSample))

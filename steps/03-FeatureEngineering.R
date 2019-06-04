@@ -1,9 +1,6 @@
 ### FEATURE ENGINEERING
 
 # Aplicando Engenharia de Atributos em Variaveis Numericas
-# Verificar se existem valores ausentes (missing) em cada coluna
-# Dados NA nao encontrados
-any(is.na(dfSelected))
 
 # Verificando a taxa de retorno
 # Observa-se que 96% das unidades não tem retorno e menos de 2% retornaram 1 unidade
